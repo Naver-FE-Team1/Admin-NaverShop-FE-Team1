@@ -1,23 +1,22 @@
-import "./List.scss"
-import Sidebar from "../../molecules/Sidebar/Sidebar"
-import Navbar from "../../molecules/Navbar/Navbar"
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/firebase-config";
-import DataTable from "../../organisms/DataTable/DataTable";
-
-const List = () => {
-  const [users, setUsers] = useState([]);
+import Sidebar from "../../molecules/Sidebar/Sidebar";
+import Navbar from "../../molecules/Navbar/Navbar";
+import DataGridView from "../../molecules/DataGridView/DataGridView";
+import "../List/List.scss";
+const ListProduct = () => {
+  const [products, setProducts] = useState([]);
   useEffect(() => {
     (async () => {
-      const colRef = collection(db, "users");
+      const colRef = collection(db, "products");
       const snapshots = await getDocs(colRef);
       const docs = snapshots.docs.map((doc) => {
         const data = doc.data();
         data.id = doc.id;
         return data;
       });
-      setUsers(docs);
+      setProducts(docs);
     })();
   }, []);
   return (
@@ -25,10 +24,10 @@ const List = () => {
       <Sidebar />
       <div className="listContainer">
         <Navbar />
-        <DataTable users={users} />
+        <DataGridView products={products} />
       </div>
     </div>
   );
 };
 
-export default List;
+export default ListProduct;
